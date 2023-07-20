@@ -167,5 +167,28 @@ links reference:
 
 1. run to create deployment:
     1. `kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080`
-1. run to export previously created deployment to a file
-    1. `kubectl get deployment hello-node -o yaml > deployment.yaml`
+    1. run to export previously created deployment to a file
+        1. `kubectl get deployment hello-node -o yaml > deployment.yaml`
+1. run to create a service:
+    1. `kubectl expose deployment hello-node --type=LoadBalancer --port=8080`
+    1. run to export service to a file
+        1. `kubectl get service hello-node -o yaml > service.yaml`
+1. access the service:
+    1. `minikube service hello-node`
+        - output:
+
+            ```shell
+            |-----------|------------|-------------|---------------------------|
+            | NAMESPACE |    NAME    | TARGET PORT |            URL            |
+            |-----------|------------|-------------|---------------------------|
+            | default   | hello-node |        8080 | http://192.168.49.2:31171 |
+            |-----------|------------|-------------|---------------------------|
+            🏃  Starting tunnel for service hello-node.
+            |-----------|------------|-------------|------------------------|
+            | NAMESPACE |    NAME    | TARGET PORT |          URL           |
+            |-----------|------------|-------------|------------------------|
+            | default   | hello-node |             | http://127.0.0.1:53949 |
+            |-----------|------------|-------------|------------------------|
+            🎉  Opening service default/hello-node in default browser...
+            ❗  Because you are using a Docker driver on windows, the terminal needs to be open to run it.
+            ```
