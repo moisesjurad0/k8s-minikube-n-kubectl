@@ -80,3 +80,61 @@ links reference:
     kubectl apply -f mongo.yaml
     kubectl apply -f webapp.yaml
     ```
+
+1. run:`kubectl get all` to verify success creating components
+    - output:
+
+        ```shell
+        NAME                                    READY   STATUS              RESTARTS   AGE
+        pod/mongo-deployment-855b879886-4vcvk   0/1     ContainerCreating   0          12s
+        pod/webapp-deployment-9fccd564d-2xc2r   0/1     ContainerCreating   0          5s
+
+        NAME                     TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+        service/kubernetes       ClusterIP   10.96.0.1       <none>        443/TCP          5h20m
+        service/mongo-service    ClusterIP   10.102.132.76   <none>        27017/TCP        12s
+        service/webapp-service   NodePort    10.103.35.95    <none>        3000:30100/TCP   5s
+
+        NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+        deployment.apps/mongo-deployment    0/1     1            0           12s
+        deployment.apps/webapp-deployment   0/1     1            0           5s
+
+        NAME                                          DESIRED   CURRENT   READY   AGE
+        replicaset.apps/mongo-deployment-855b879886   1         1         0       12s
+        replicaset.apps/webapp-deployment-9fccd564d   1         1         0       5s
+        ```
+
+1. run: `kubectl get configmap`
+    - output:
+
+        ```shell
+        NAME               DATA   AGE
+        kube-root-ca.crt   1      5h25m
+        mongo-config       1      5m59s
+        ```
+
+1. run: `kubectl get secret`
+
+    - output:
+
+        ```shell
+        NAME           TYPE     DATA   AGE
+        mongo-secret   Opaque   2      6m13s
+        ```
+
+1. get the external ip address
+    1. run: `minikube ip`
+        - output:
+
+            ```shell
+            192.168.49.2
+            ```
+
+    1. run: `kubectl get node -o wide`
+    - output:
+
+        ```shell
+        NAME       STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION                       CONTAINER-RUNTIME
+        minikube   Ready    control-plane   5h31m   v1.26.3   192.168.49.2   <none>        Ubuntu 20.04.5 LTS   5.10.102.1-microsoft-standard-WSL2   docker://23.0.2
+        ```
+
+1. access app in 192.168.49.2:30100
