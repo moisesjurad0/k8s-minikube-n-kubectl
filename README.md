@@ -137,4 +137,35 @@ links reference:
         minikube   Ready    control-plane   5h31m   v1.26.3   192.168.49.2   <none>        Ubuntu 20.04.5 LTS   5.10.102.1-microsoft-standard-WSL2   docker://23.0.2
         ```
 
-1. access app in 192.168.49.2:30100
+1. access app in 192.168.49.2:30100 (or if not works)
+1. minikube service webapp-service
+    - output:
+
+        ```shell
+        |-----------|----------------|-------------|---------------------------|
+        | NAMESPACE |      NAME      | TARGET PORT |            URL            |
+        |-----------|----------------|-------------|---------------------------|
+        | default   | webapp-service |        3000 | http://192.168.49.2:30100 |
+        |-----------|----------------|-------------|---------------------------|
+        🏃  Starting tunnel for service webapp-service.
+        |-----------|----------------|-------------|------------------------|
+        | NAMESPACE |      NAME      | TARGET PORT |          URL           |
+        |-----------|----------------|-------------|------------------------|
+        | default   | webapp-service |             | http://127.0.0.1:52524 |
+        |-----------|----------------|-------------|------------------------|
+        🎉  Opening service default/webapp-service in default browser...
+        ❗  Because you are using a Docker driver on windows, the terminal needs to be open to run it.
+        ```
+
+    - then it's gonna open the browser. In my case: <http://127.0.0.1:52524/> (a tunnel to reach <http://192.168.49.2:30100>)
+
+## Utilities
+
+- `minikube dashboard`
+
+## try Hello Minikube
+
+1. run to create deployment:
+    1. `kubectl create deployment hello-node --image=registry.k8s.io/e2e-test-images/agnhost:2.39 -- /agnhost netexec --http-port=8080`
+1. run to export previously created deployment to a file
+    1. `kubectl get deployment hello-node -o yaml > deployment.yaml`
