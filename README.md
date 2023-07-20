@@ -15,7 +15,7 @@ previous steps:
 steps:
 
 1. run in terminal: `winget install minikube`
-1. run in terminal: `minikube start`
+1. run in terminal: `minikube start --driver=docker`
     - error output:
 
     ```txt
@@ -29,5 +29,8 @@ steps:
                 - <https://minikube.sigs.k8s.io/docs/tutorials/wsl_docker_driver/>
     - success output:
 
-        ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/images/Screenshot 2023-07-19 205259.png>)
+        ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/images/Screenshot 2023-07-19 211348.png>)
+
+        ![Image02](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/images/Screenshot 2023-07-19 205259.png>)
+
 1.
