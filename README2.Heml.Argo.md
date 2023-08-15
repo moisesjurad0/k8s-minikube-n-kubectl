@@ -42,7 +42,7 @@ Creating shim for 'helm'.
 'helm' (3.12.3) was installed successfully!
 ```
 
-## Install ArgoCD
+## Install ArgoCD using Helm
 
 1. Add the ArgoCD Helm repository to Helm: `helm repo add argo https://argoproj.github.io/argo-helm`
 
@@ -92,7 +92,7 @@ Creating shim for 'helm'.
     (You should delete the initial secret afterwards as suggested by the Getting Started Guide: https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)
     ```
 
-## Install ArgoCD | verify installation
+## Install ArgoCD using Helm | verify installation
 
 1. `kubectl get all` (before installation)
 
@@ -144,3 +144,62 @@ Creating shim for 'helm'.
     NAME                                             READY   AGE
     statefulset.apps/argocd-application-controller   0/1     15s
     ```
+
+1. again after some minutes
+
+    ```PowerShell
+    NAME                                                    READY   STATUS    RESTARTS   AGE
+    pod/argocd-application-controller-0                     1/1     Running   0          34m
+    pod/argocd-applicationset-controller-6c8cd6f9b5-948tj   1/1     Running   0          34m
+    pod/argocd-dex-server-5f4447b6bc-jfvtb                  1/1     Running   0          34m
+    pod/argocd-notifications-controller-6d95c769fd-5q2ss    1/1     Running   0          34m
+    pod/argocd-redis-64f5b489bd-6c8fb                       1/1     Running   0          34m
+    pod/argocd-repo-server-6b5dcfbc46-znj7w                 1/1     Running   0          34m
+    pod/argocd-server-54fdc47648-jnsht                      1/1     Running   0          34m
+
+    NAME                                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+    service/argocd-applicationset-controller   ClusterIP   10.109.96.25     <none>        7000/TCP            34m
+    service/argocd-dex-server                  ClusterIP   10.106.133.194   <none>        5556/TCP,5557/TCP   34m
+    service/argocd-redis                       ClusterIP   10.97.150.156    <none>        6379/TCP            34m
+    service/argocd-repo-server                 ClusterIP   10.100.99.187    <none>        8081/TCP            34m
+    service/argocd-server                      ClusterIP   10.108.229.17    <none>        80/TCP,443/TCP      34m
+    service/kubernetes                         ClusterIP   10.96.0.1        <none>        443/TCP             139m
+
+    NAME                                               READY   UP-TO-DATE   AVAILABLE   AGE
+    deployment.apps/argocd-applicationset-controller   1/1     1            1           34m
+    deployment.apps/argocd-dex-server                  1/1     1            1           34m
+    deployment.apps/argocd-notifications-controller    1/1     1            1           34m
+    deployment.apps/argocd-redis                       1/1     1            1           34m
+    deployment.apps/argocd-repo-server                 1/1     1            1           34m
+    deployment.apps/argocd-server                      1/1     1            1           34m
+
+    NAME                                                          DESIRED   CURRENT   READY   AGE
+    replicaset.apps/argocd-applicationset-controller-6c8cd6f9b5   1         1         1       34m
+    replicaset.apps/argocd-dex-server-5f4447b6bc                  1         1         1       34m
+    replicaset.apps/argocd-notifications-controller-6d95c769fd    1         1         1       34m
+    replicaset.apps/argocd-redis-64f5b489bd                       1         1         1       34m
+    replicaset.apps/argocd-repo-server-6b5dcfbc46                 1         1         1       34m
+    replicaset.apps/argocd-server-54fdc47648                      1         1         1       34m
+
+    NAME                                             READY   AGE
+    statefulset.apps/argocd-application-controller   1/1     34m
+    ```
+
+## OR Install ArgoCD using KubeCTL
+
+<https://argo-cd.readthedocs.io/en/stable/getting_started/>
+
+```PowerShell
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+## Exposing ArgoCD Server
+
+```PowerShell
+kubectl port-forward service/argocd-server -n default 8080:443
+# OR
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+# OR
+kubectl port-forward -n argocd svc argocd-server 8080:443
+```
