@@ -19,6 +19,9 @@ links reference:
 
 1. run in terminal: `winget install minikube`
 1. run in terminal: `minikube start --driver=docker`
+
+    - explanation: By default, Minikube uses the "docker" driver for creating the Kubernetes nodes. If you want to use a different driver, you can specify it using the --driver flag. For example, to use the VirtualBox driver: `minikube start --driver=virtualbox`, to use the KVM2 driver: `minikube start --driver=kvm2`
+
     - error output:
 
         ```txt
@@ -81,7 +84,7 @@ links reference:
     kubectl apply -f webapp.yaml
     ```
 
-1. run:`kubectl get all` to verify success creating components
+1. run: `kubectl get all` to verify success creating components
     - output:
 
         ```shell
@@ -192,3 +195,48 @@ links reference:
             🎉  Opening service default/hello-node in default browser...
             ❗  Because you are using a Docker driver on windows, the terminal needs to be open to run it.
             ```
+
+---
+
+## Clean up all after use
+
+- **Delete Existing Cluster (Optional):**  If you want to ensure a clean environment, you can delete any existing Minikube clusters before starting a new one
+- **Clean Up:** If you need to completely reset your Minikube environment, you can stop and delete the cluster using
+
+```sh
+minikube delete
+# OR
+minikube stop
+minikube delete
+```
+
+---
+
+## Command Summary
+
+### PowerShell
+
+1. winget install minikube
+
+### minikube
+
+1. minikube start --driver=docker
+1. minikube status
+1. minikube ip
+1. minikube service [theService]
+1. minikube dashboard
+1. minikube stop
+1. minikube delete
+
+### kubectl
+
+1. kubectl cluster-info
+1. kubectl get node
+1. kubectl get node -o wide
+1. kubectl get pod
+1. kubectl get configmap
+1. kubectl get secret
+1. kubectl get all
+1. kubectl apply -f [yamlFile]
+1. kubectl create deployment [parameters]
+1. kubectl expose deployment [parameters]
