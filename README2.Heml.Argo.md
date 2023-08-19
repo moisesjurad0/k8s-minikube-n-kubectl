@@ -42,7 +42,7 @@ Creating shim for 'helm'.
 'helm' (3.12.3) was installed successfully!
 ```
 
-## Install ArgoCD using Helm
+## Install ArgoCD
 
 1. Add the ArgoCD Helm repository to Helm: `helm repo add argo https://argoproj.github.io/argo-helm`
 
@@ -62,7 +62,20 @@ Creating shim for 'helm'.
     Update Complete. ⎈Happy Helming!⎈
     ```
 
-1. Install ArgoCD: `helm install argocd argo/argo-cd`
+1. Install ArgoCD:
+
+    ```PowerShell
+    # using helm withOut a namespace
+    helm install argocd argo/argo-cd
+    # OR
+    # using helm with a namespace and a release name "argocd-release" <-- use this one
+    kubectl create namespace argocd
+    helm install argocd-release argo/argo-cd --namespace argocd
+    # OR Install ArgoCD using KubeCTL
+    # https://argo-cd.readthedocs.io/en/stable/getting_started
+    kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    ```
 
     output:
 
@@ -92,7 +105,7 @@ Creating shim for 'helm'.
     (You should delete the initial secret afterwards as suggested by the Getting Started Guide: https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)
     ```
 
-## Install ArgoCD using Helm | verify installation
+## Install ArgoCD | verify installation
 
 1. `kubectl get all` (before installation)
 
@@ -185,15 +198,6 @@ Creating shim for 'helm'.
     statefulset.apps/argocd-application-controller   1/1     34m
     ```
 
-## OR Install ArgoCD using KubeCTL
-
-<https://argo-cd.readthedocs.io/en/stable/getting_started/>
-
-```PowerShell
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-```
-
 ## Exposing ArgoCD Server
 
 ```PowerShell
@@ -202,4 +206,96 @@ kubectl port-forward service/argocd-server -n default 8080:443
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 # OR
 kubectl port-forward -n argocd svc argocd-server 8080:443
+```
+
+output:
+
+```PowerShell
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+.
+.
+Handling connection for 8080
+.
+.
+```
+
+### Getting Password to login to ArgoCD Server
+
+Keep in mind the User is **"Admin"**
+
+```PowerShell
+kubectl -n default get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+# OR
+kubectl get secret argocd-initial-admin-secret -n argocd -o yaml
+echo <"paste the password string from the previous command"> | base64 --decode
+# OR
+kubectl get secret argocd-initial-admin-secret -n default -o yaml
+echo <"paste the password string from the previous command"> | base64 --decode
+# OR go to
+# Getting Password with ArgoCD CLI
+```
+
+output:
+
+```PowerShell
+# its a secret
+# OR 
+apiVersion: v1
+data:
+  password: [its a secret]
+kind: Secret
+metadata:
+  creationTimestamp: "2023-08-15T16:58:19Z"
+  name: argocd-initial-admin-secret
+  namespace: default
+  resourceVersion: "5652"
+  uid: 8c638f8d-8fcf-4d7b-a058-09480c344ab5
+type: Opaque
+```
+
+OR
+
+#### Install ArgoCD CLI using PowerShell
+
+<https://argo-cd.readthedocs.io/en/stable/cli_installation/>
+
+Download With PowerShell: Invoke-WebRequest¶
+You can view the latest version of Argo CD at the link above or run the following command to grab the version:
+
+```PowerShell
+$version = (Invoke-RestMethod https://api.github.com/repos/argoproj/argo-cd/releases/latest).tag_name
+```
+
+Replace `$version` in the command below with the version of Argo CD you would like to download:
+
+```PowerShell
+$url = "https://github.com/argoproj/argo-cd/releases/download/" + $version + "/argocd-windows-amd64.exe"
+$output = "argocd.exe"
+
+Invoke-WebRequest -Uri $url -OutFile $output
+```
+
+Also please note you will probably need to move the file into your PATH. Use following command to add Argo CD into environment variables PATH
+
+```PowerShell
+[Environment]::SetEnvironmentVariable("Path", "$env:Path;C:\Path\To\ArgoCD-CLI", "User")
+```
+
+After finishing the instructions above, you should now be able to run `argocd` commands.
+
+#### Getting Password with ArgoCD CLI
+
+The initial password for the admin account is auto-generated and stored as clear text in the field password in a secret named argocd-initial-admin-secret in your Argo CD installation namespace. You can simply retrieve this password using the argocd CLI:
+
+```PowerShell
+argocd admin initial-password -n argocd
+```
+
+output:
+
+```PowerShell
+<its a secret>
+
+ This password must be only used for first time login. We strongly recommend you update the password using `argocd account update-password`.
 ```
