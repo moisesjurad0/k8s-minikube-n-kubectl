@@ -133,12 +133,12 @@ links reference:
             ```
 
     1. run: `kubectl get node -o wide`
-    - output:
+        - output:
 
-        ```shell
-        NAME       STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION                       CONTAINER-RUNTIME
-        minikube   Ready    control-plane   5h31m   v1.26.3   192.168.49.2   <none>        Ubuntu 20.04.5 LTS   5.10.102.1-microsoft-standard-WSL2   docker://23.0.2
-        ```
+            ```shell
+            NAME       STATUS   ROLES           AGE     VERSION   INTERNAL-IP    EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION                       CONTAINER-RUNTIME
+            minikube   Ready    control-plane   5h31m   v1.26.3   192.168.49.2   <none>        Ubuntu 20.04.5 LTS   5.10.102.1-microsoft-standard-WSL2   docker://23.0.2
+            ```
 
 1. access app in 192.168.49.2:30100 (or if not works)
 1. minikube service webapp-service
@@ -196,8 +196,6 @@ links reference:
             ❗  Because you are using a Docker driver on windows, the terminal needs to be open to run it.
             ```
 
----
-
 ## Clean up all after use
 
 - **Delete Existing Cluster (Optional):**  If you want to ensure a clean environment, you can delete any existing Minikube clusters before starting a new one
@@ -227,6 +225,7 @@ minikube delete
 1. minikube dashboard
 1. minikube stop
 1. minikube delete
+1. `minikube service <serviceName>` <-- to expose a public service (a Service k8s object that has LoadBalancer type -by default all are ClusterIP- ). Example `minikube service mongo-express-service`
 
 ### kubectl
 

@@ -1,4 +1,4 @@
-# K8s | 2nd README file
+# K8s - ArgoCD - 2nd README file
 
 ## Install Scoop for windows
 
