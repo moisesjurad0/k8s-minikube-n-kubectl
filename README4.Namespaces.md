@@ -99,14 +99,37 @@ kubectl apply -f namespace.yaml
 
 you can't use namespaces that don't exists in configuration files
 
-## Why to use Namespaces
+## Why to use Namespaces | Use Cases
 
-1. Everything in one Namespace
-1. good to separate and have a good overview
-1. you could create
-    - "Database" namespace
-    - and "Monitoring" namespace and put prometheus, grafana and all related
-    - you could also have "Elastic Stack" namespace
-    - "Nginx-Ingress" namespace
-1. according to officially documentation you shouldn't use namespaces for smaller projects / up to then users.
-    - but nana belive it's always good idea to group the resources in namespaces.
+1. Case 1 | Everything in one Namespace
+    - it's gonna be really difficult to have an overview of what's in there specially if you have multiple users
+1. Case 1 | Resources Grouped in Namespaces
+    1. Example: you could create
+        - "Database" namespace and
+        - "Monitoring" namespace and put prometheus, grafana and all related. you could also have
+        - "Elastic Stack" namespace and
+        - "Nginx-Ingress" namespace
+    1. according to officially documentation you shouldn't use namespaces for smaller projects / up to then users.
+        - but nana belive it's always good idea to group the resources in namespaces.
+1. Case 2 | Many teams, same application
+    1. Example: you have 2 teams that use the same cluster.
+        - team 1, deploys my-app deployment
+        - team 2, deploys my-app deployment (second team is gonna overwrite the first deployment)
+            - if the're using some CI/CD tool (jenkins, argoCD) they aren't gonna know that they have overwritten the other team deployment.
+    1. solution: Each team could work in their own namespace.
+1. Case 3 | Resource Sharing: Staging and Development
+    1. Example: you have 1 cluster and you want to host staging and development environment
+        - Staging Namespace
+        - Development Namespace
+        - Nginx-Ingress Controller Namespace <-- As it is in the same cluster as both environment ns you can access'em
+        - Elastic Stack Namespace <-- As it is in the same cluster as both environment ns you can access'em
+    1. this way you don't have to deploy this Nginx-Ingress Controller and Elastic Stack twice in the same cluster.
+1. Case 3 | Resource Sharing: Blue/Green Development
+    1. Example: in the same cluster you need to have 2 versions of production.
+        - Production Blue Namespace <-- the one that is active
+        - Production Green Namespace <-- the other one that is gonna be the next production version.
+    1. these namespaces (both) might need to use the same resources like:
+        - Nginx-Ingress Controller Namespace <-- As it is in the same cluster as both environment ns you can access'em
+        - Elastic Stack Namespace <-- As it is in the same cluster as both environment ns you can access'em
+1. Case 4 | Access and Resource Limits on Namespaces
+    1.  
