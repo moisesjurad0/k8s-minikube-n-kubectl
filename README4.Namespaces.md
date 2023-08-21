@@ -132,4 +132,8 @@ you can't use namespaces that don't exists in configuration files
         - Nginx-Ingress Controller Namespace <-- As it is in the same cluster as both environment ns you can access'em
         - Elastic Stack Namespace <-- As it is in the same cluster as both environment ns you can access'em
 1. Case 4 | Access and Resource Limits on Namespaces
-    1.  
+    1. As in the example in "Case 2 | Many teams, same application"
+        1. you can give each team access only to theri namespaces this way you isolate each team by their respective namespace
+        1. each team has own isolated environment
+        1. you can also limit the resources (CPU, RAM, Storage) in each team namespace
+            - you can define resource quotas per namespace
