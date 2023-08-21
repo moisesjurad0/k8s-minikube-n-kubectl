@@ -80,3 +80,21 @@ kube-public       Active   2d20h
 kube-system       Active   2d20h
 my-namespace      Active   71s
 ```
+
+## create namespace with configuration file
+
+use a k8s yaml definition file containing the namespace
+
+```yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: your-namespace-name
+```
+
+```sh
+# then apply the k8s file
+kubectl apply -f namespace.yaml
+```
+
+you can't use namespaces that don't exists in configuration files
