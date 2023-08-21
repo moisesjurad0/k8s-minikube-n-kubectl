@@ -11,7 +11,16 @@
 
 ## Four OutOfTheBox Namespaces
 
-1. default <--
+1. default
+1. kube-node-lease
+1. kube-public
+1. kube-system
+1. kubernetes-dashboard <-- You will not have this in a standar cluster
+
+## Explanation of Namespaces created by default
+
+1. default
+    - resources you create are located here (by default if no haven't create another namespace and specify it on the resource creation)
 1. kube-node-lease <-- (it's a recent addition to k8s)
     - holds information about heartbeats of nodes
     - each node has associated lease object in namespace
@@ -21,7 +30,7 @@
     - contains a config map wich contains cluster information (is accesible even without authentication)
 
     ```sh
-    kubectl cluster-info                                                                                      pwsh   100  14:44:53 
+    kubectl cluster-info
     ```
 
     output:
@@ -41,4 +50,33 @@
     - specific only with minikube.
     - You will not have this in a standar cluster.
 
-### default
+## Create a Namespace
+
+```sh
+# command to create namespace:
+kubectl create namespace <my-namespace>
+```
+
+```sh
+# output:
+namespace/my-namespace created
+```
+
+## List namespaces
+
+```sh
+# command:
+kubectl get namespaces
+```
+
+```sh
+# output:
+NAME              STATUS   AGE
+apph3             Active   2d7h
+argocd            Active   2d20h
+default           Active   2d20h
+kube-node-lease   Active   2d20h
+kube-public       Active   2d20h
+kube-system       Active   2d20h
+my-namespace      Active   71s
+```
