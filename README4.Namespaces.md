@@ -137,3 +137,9 @@ you can't use namespaces that don't exists in configuration files
         1. each team has own isolated environment
         1. you can also limit the resources (CPU, RAM, Storage) in each team namespace
             - you can define resource quotas per namespace
+
+## Characteristics of Namespaces
+
+1. You can't access most resources from another namespace
+    - example
+        1.
