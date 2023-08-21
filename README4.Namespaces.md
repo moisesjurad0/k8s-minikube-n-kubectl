@@ -12,10 +12,10 @@
 ## Four OutOfTheBox Namespaces
 
 1. default <--
-1. kube-node-lease
-    - it's a recent addition to k8s
+1. kube-node-lease <-- (it's a recent addition to k8s)
     - holds information about heartbeats of nodes
     - each node has associated lease object in namespace
+    - determines the availability of a node
 1. kube-public
     - publicly accesible data
     - contains a config map wich contains cluster information (is accesible even without authentication)
