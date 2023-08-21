@@ -98,3 +98,15 @@ kubectl apply -f namespace.yaml
 ```
 
 you can't use namespaces that don't exists in configuration files
+
+## Why to use Namespaces
+
+1. Everything in one Namespace
+1. good to separate and have a good overview
+1. you could create
+    - "Database" namespace
+    - and "Monitoring" namespace and put prometheus, grafana and all related
+    - you could also have "Elastic Stack" namespace
+    - "Nginx-Ingress" namespace
+1. according to officially documentation you shouldn't use namespaces for smaller projects / up to then users.
+    - but nana belive it's always good idea to group the resources in namespaces.
