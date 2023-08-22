@@ -25,6 +25,14 @@ Kubectx & Kubens
 
 - <https://github.com/ahmetb/kubectx>
 
+k8s
+
+- <https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/>
+
+Ingress-Nginx Controller
+
+- <https://kubernetes.github.io/ingress-nginx/deploy/baremetal/>
+
 Moises Jurado
 
 - <https://github.com/moisesjurad0/k8s-argoCD-app-of-apps-definition>
