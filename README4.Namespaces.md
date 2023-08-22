@@ -138,8 +138,34 @@ you can't use namespaces that don't exists in configuration files
         1. you can also limit the resources (CPU, RAM, Storage) in each team namespace
             - you can define resource quotas per namespace
 
+### Summary
+
+1. **Structure** your components
+1. **Avoid conflicts** between teams
+1. **Share services** between different environments
+1. **Access and Resource Limits** on Namespaces Level
+
 ## Characteristics of Namespaces
 
 1. You can't access most resources from another namespace
-    - example
-        1.
+    1. example
+        1. Project A Namespace
+            - ConfigMap with a reference to "DB ns Service"
+        1. Project A Namespace
+            - Can't use the "Project A ns" ConfiMap
+            - Each NS must define own ConfigMap
+        1. DB Namespace
+            - Service
+    1. the same applies to secrets
+    1. but you can access services from another ns
+
+        example: you have to use this notation in the db_url `service.namespace`. This way you can reference services in another ns.
+
+        ```yaml
+        apiVersion: v1
+        kind: ConfigMap
+        metadata:
+            name: mysql-configmap
+        data:
+            db_url: mysql-service.DB
+        ```
