@@ -352,6 +352,8 @@ Successfully installed
 
 kubens
 ![Image01](<https://github.com/ahmetb/kubectx/raw/master/img/kubens-demo.gif>)
+(extracted from <https://github.com/ahmetb/kubectx>)
 
 kubectx
 ![Image02](<https://github.com/ahmetb/kubectx/raw/master/img/kubectx-demo.gif>)
+(extracted from <https://github.com/ahmetb/kubectx>)
