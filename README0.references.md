@@ -34,6 +34,12 @@ Nana Janashia
 - k8s in 4 hours
   - <https://youtu.be/X48VuDVv0do>
     - <https://gitlab.com/nanuchi/youtube-tutorial-series/>
+      - <https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/basic-kubectl-commands/cli-commands.md>
+      - <https://gitlab.com/nanuchi/youtube-tutorial-series/-/tree/master/kubernetes-configuration-file-explained>
+      - <https://gitlab.com/nanuchi/youtube-tutorial-series/-/tree/master/demo-kubernetes-components>
+      - <https://gitlab.com/nanuchi/youtube-tutorial-series/-/blob/master/kubernetes-ingress/dashboard-ingress.yaml>
+      - <https://gitlab.com/nanuchi/youtube-tutorial-series/-/tree/master/kubernetes-volumes>
+
 - k8s in 1 hour
   - <https://youtu.be/s_o8dwzRlu4>
     - <https://gitlab.com/nanuchi/k8s-in-1-hour>
