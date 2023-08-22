@@ -4,7 +4,7 @@
 
 having alredy installed helm chart for kube-prometheus-stack (also known as the good old "prometheus operator")
 
-can use argocd to install it with a chart. See <https://github.com/moisesjurad0/argoCD-app-of-apps-definition/tree/main/apph3>
+can use argocd to install it with a chart. See <https://github.com/moisesjurad0/k8s-argoCD-app-of-apps-definition/tree/main/apph3>
 
 1. kubectl logs pr-op-grafana-7b4cb67f8f-cbhbk -n argocd
 1. kubectl port-forward deployment.apps/pr-op-grafana -n argocd 3000 <-- access grafana UI
