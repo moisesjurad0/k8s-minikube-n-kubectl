@@ -157,6 +157,7 @@ you can't use namespaces that don't exists in configuration files
         1. DB Namespace
             - Service
     1. the same applies to secrets
+1. Access Service in another Namespace
     1. but you can access services from another ns
 
         example: you have to use this notation in the db_url `service.namespace`. This way you can reference services in another ns.
@@ -169,3 +170,188 @@ you can't use namespaces that don't exists in configuration files
         data:
             db_url: mysql-service.DB
         ```
+
+1. Components, wich can't be created within a Namespace
+    - they just live globally in the cluster and you can't isolate them or put them in a certain ns
+    - examples:
+        - volume or persistent volume
+        - node
+    - you can list resources that are not in a ns using:
+
+        ```sh
+        kubectl api-resources --namespaced=false
+        ```
+
+        ```sh
+        NAME                              SHORTNAMES   APIVERSION                             NAMESPACED   KIND
+        componentstatuses                 cs           v1                                     false        ComponentStatus
+        namespaces                        ns           v1                                     false        Namespace
+        nodes                             no           v1                                     false        Node
+        persistentvolumes                 pv           v1                                     false        PersistentVolume
+        mutatingwebhookconfigurations                  admissionregistration.k8s.io/v1        false        MutatingWebhookConfiguration
+        validatingwebhookconfigurations                admissionregistration.k8s.io/v1        false        ValidatingWebhookConfiguration
+        customresourcedefinitions         crd,crds     apiextensions.k8s.io/v1                false        CustomResourceDefinition
+        apiservices                                    apiregistration.k8s.io/v1              false        APIService
+        tokenreviews                                   authentication.k8s.io/v1               false        TokenReview
+        selfsubjectaccessreviews                       authorization.k8s.io/v1                false        SelfSubjectAccessReview
+        selfsubjectrulesreviews                        authorization.k8s.io/v1                false        SelfSubjectRulesReview
+        subjectaccessreviews                           authorization.k8s.io/v1                false        SubjectAccessReview
+        certificatesigningrequests        csr          certificates.k8s.io/v1                 false        CertificateSigningRequest
+        flowschemas                                    flowcontrol.apiserver.k8s.io/v1beta3   false        FlowSchema
+        prioritylevelconfigurations                    flowcontrol.apiserver.k8s.io/v1beta3   false        PriorityLevelConfiguration
+        ingressclasses                                 networking.k8s.io/v1                   false        IngressClass
+        runtimeclasses                                 node.k8s.io/v1                         false        RuntimeClass
+        clusterrolebindings                            rbac.authorization.k8s.io/v1           false        ClusterRoleBinding
+        clusterroles                                   rbac.authorization.k8s.io/v1           false        ClusterRole
+        priorityclasses                   pc           scheduling.k8s.io/v1                   false        PriorityClass
+        csidrivers                                     storage.k8s.io/v1                      false        CSIDriver
+        csinodes                                       storage.k8s.io/v1                      false        CSINode
+        storageclasses                    sc           storage.k8s.io/v1                      false        StorageClass
+        volumeattachments                              storage.k8s.io/v1                      false        VolumeAttachment
+        ```
+
+    - also you can do the oposite:
+
+        ```sh
+        kubectl api-resources --namespaced=true
+        ```
+
+        ```sh
+        NAME                        SHORTNAMES         APIVERSION                       NAMESPACED   KIND
+        bindings                                       v1                               true         Binding
+        configmaps                  cm                 v1                               true         ConfigMap
+        endpoints                   ep                 v1                               true         Endpoints
+        events                      ev                 v1                               true         Event
+        limitranges                 limits             v1                               true         LimitRange
+        persistentvolumeclaims      pvc                v1                               true         PersistentVolumeClaim
+        pods                        po                 v1                               true         Pod
+        podtemplates                                   v1                               true         PodTemplate
+        replicationcontrollers      rc                 v1                               true         ReplicationController
+        resourcequotas              quota              v1                               true         ResourceQuota
+        secrets                                        v1                               true         Secret
+        serviceaccounts             sa                 v1                               true         ServiceAccount
+        services                    svc                v1                               true         Service
+        controllerrevisions                            apps/v1                          true         ControllerRevision
+        daemonsets                  ds                 apps/v1                          true         DaemonSet
+        deployments                 deploy             apps/v1                          true         Deployment
+        replicasets                 rs                 apps/v1                          true         ReplicaSet
+        statefulsets                sts                apps/v1                          true         StatefulSet
+        applications                app,apps           argoproj.io/v1alpha1             true         Application
+        applicationsets             appset,appsets     argoproj.io/v1alpha1             true         ApplicationSet
+        appprojects                 appproj,appprojs   argoproj.io/v1alpha1             true         AppProject
+        localsubjectaccessreviews                      authorization.k8s.io/v1          true         LocalSubjectAccessReview
+        horizontalpodautoscalers    hpa                autoscaling/v2                   true         HorizontalPodAutoscaler
+        cronjobs                    cj                 batch/v1                         true         CronJob
+        jobs                                           batch/v1                         true         Job
+        leases                                         coordination.k8s.io/v1           true         Lease
+        endpointslices                                 discovery.k8s.io/v1              true         EndpointSlice
+        events                      ev                 events.k8s.io/v1                 true         Event
+        alertmanagerconfigs         amcfg              monitoring.coreos.com/v1alpha1   true         AlertmanagerConfig
+        alertmanagers               am                 monitoring.coreos.com/v1         true         Alertmanager
+        podmonitors                 pmon               monitoring.coreos.com/v1         true         PodMonitor
+        probes                      prb                monitoring.coreos.com/v1         true         Probe
+        prometheusagents            promagent          monitoring.coreos.com/v1alpha1   true         PrometheusAgent
+        prometheuses                prom               monitoring.coreos.com/v1         true         Prometheus
+        prometheusrules             promrule           monitoring.coreos.com/v1         true         PrometheusRule
+        scrapeconfigs               scfg               monitoring.coreos.com/v1alpha1   true         ScrapeConfig
+        servicemonitors             smon               monitoring.coreos.com/v1         true         ServiceMonitor
+        thanosrulers                ruler              monitoring.coreos.com/v1         true         ThanosRuler
+        ingresses                   ing                networking.k8s.io/v1             true         Ingress
+        networkpolicies             netpol             networking.k8s.io/v1             true         NetworkPolicy
+        poddisruptionbudgets        pdb                policy/v1                        true         PodDisruptionBudget
+        rolebindings                                   rbac.authorization.k8s.io/v1     true         RoleBinding
+        roles                                          rbac.authorization.k8s.io/v1     true         Role
+        csistoragecapacities                           storage.k8s.io/v1                true         CSIStorageCapacity
+        ```
+
+## Create Component in a ns
+
+1. using parammeter `--namespace` with kubectl or `-n`
+
+    ```sh
+    kubectl apply -f file.yaml --namespace=my-namespace
+    # replace file.yaml by the yaml definition of your component.
+    # repplace my-namespace by the ns your want to use.
+    ```
+
+1. using a namespace tag inside a yaml file
+
+    ```yaml
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+        name: mysql-configmap
+        namespace: my-namespace
+    data:
+        db_url: mysql-service.DB
+    ```
+
+    - this way is a better option because is well documented
+
+## Change active ns
+
+- example: a team that only have permissions in its namespace "my-namespace", i'd be annoying add `-n my-namespace` to all commands
+- Change active ns with **kubens**. k8s nor kubectl have an option for this feature.
+
+```sh
+# kubens lives inside the kubectx repo in github. Both lives there.
+
+# https://github.com/ahmetb/kubectx
+# kubectx is a tool to switch between contexts (clusters) on kubectl faster.
+# kubens is a tool to switch between Kubernetes namespaces (and configure them for kubectl) easily.
+
+# note that both are a combination of "kube" and  "ctx" / "ns" that stands for Context and Namespace
+
+# with Chocolatey (Windows)
+choco install kubens kubectx
+
+# Windows Installation (using Scoop)
+scoop bucket add main
+scoop install main/kubens main/kubectx
+
+# with winget (Windows)
+winget install --id ahmetb.kubectx
+winget install --id ahmetb.kubens
+```
+
+output using winget kubectx
+
+```PowerShell
+Found kubectx [ahmetb.kubectx] Version 0.9.5
+This application is licensed to you by its owner.
+Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Downloading https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubectx_v0.9.5_windows_x86_64.zip
+  ██████████████████████████████  1.05 MB / 1.05 MB
+Successfully verified installer hash
+Extracting archive...
+Successfully extracted archive
+Starting package install...
+Path environment variable modified; restart your shell to use the new value.
+Command line alias added: "kubectx"
+Successfully installed
+```
+
+output using winget kubens
+
+```PowerShell
+Found kubens [ahmetb.kubens] Version 0.9.5
+This application is licensed to you by its owner.
+Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Downloading https://github.com/ahmetb/kubectx/releases/download/v0.9.5/kubens_v0.9.5_windows_x86_64.zip
+  ██████████████████████████████  9.58 MB / 9.58 MB
+Successfully verified installer hash
+Extracting archive...
+Successfully extracted archive
+Starting package install...
+Path environment variable modified; restart your shell to use the new value.
+Command line alias added: "kubens"
+Successfully installed
+```
+
+### kubens and kubectx mini demos
+
+kubens
+![Image01](<https://github.com/ahmetb/kubectx/raw/master/img/kubens-demo.gif>)
+
+kubectx
+![Image02](<https://github.com/ahmetb/kubectx/raw/master/img/kubectx-demo.gif>)
