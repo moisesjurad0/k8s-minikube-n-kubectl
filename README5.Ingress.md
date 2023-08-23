@@ -115,3 +115,77 @@ ingress-nginx-controller-6cc5ccb977-wvvkc   1/1     Running     0          11m
     replicaset.apps/dashboard-metrics-scraper-5c6664855   1         1         1       108s
     replicaset.apps/kubernetes-dashboard-55c4cbbc7c       1         1         1       108s
     ```
+
+1. write the yaml definition file to create the ingress component in order to access the internal svc "service/kubernetes-dashboard" (listed in the previous step)
+
+    version from utub
+
+    ```yaml
+    apiVersion: networking.k8s.io/v1beta1
+    kind: Ingress
+    metadata:
+      name: dashboard-ingress
+      namespace: kubernetes-dashboard
+    spec:
+      rules:
+        - host: dashboard.com
+          http:
+            paths:
+              - backend:
+                  serviceName: kubernetes-dashboard
+                  servicePort: 80
+
+    ```
+
+    apply configuration
+
+    ```yaml
+    kubectl apply -f .\dashboard-ingress.yaml
+    ```
+
+    output
+
+    ```yaml
+    error: resource mapping not found for name: "dashboard-ingress" namespace: "kubernetes-dashboard" from ".\\dashboard-ingress.yaml": no matches for kind "Ingress" in version "networking.k8s.io/v1beta1"
+    ensure CRDs are installed first
+    ```
+
+    ---
+
+    version from repo
+
+    ```yaml
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: dashboard-ingress
+      namespace: kubernetes-dashboard
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+    spec:
+      rules:
+        - host: dashboard.com
+          http:
+            paths:
+              - path: /
+                pathType: Exact
+                backend:
+                  service:
+                    name: kubernetes-dashboard
+                    port:
+                      number: 80
+    ```
+
+    apply configuration
+
+    ```yaml
+    kubectl apply -f .\dashboard-ingress.yaml
+    ```
+
+    output
+
+    ```yaml
+    ingress.networking.k8s.io/dashboard-ingress created
+    ```
+
+    
