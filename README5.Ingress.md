@@ -188,4 +188,21 @@ ingress-nginx-controller-6cc5ccb977-wvvkc   1/1     Running     0          11m
     ingress.networking.k8s.io/dashboard-ingress created
     ```
 
-    
+    <https://youtu.be/X48VuDVv0do> 2:16:13 | <https://youtu.be/X48VuDVv0do?t=8173>
+
+    verify
+
+    ```yaml
+    kubectl get ingress -n kubernetes-dashboard
+    ```
+
+    output
+
+    ```yaml
+    NAME                CLASS    HOSTS           ADDRESS        PORTS   AGE
+    dashboard-ingress   <none>   dashboard.com   192.168.49.2   80      8m19s
+    ```
+
+    can use --watch to wait
+
+  %SystemRoot%\System32\drivers\etc\hosts
