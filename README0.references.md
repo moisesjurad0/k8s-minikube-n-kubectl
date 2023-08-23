@@ -27,8 +27,15 @@ Kubectx & Kubens
 
 k8s
 
+- <https://kubernetes.io/docs/home/>
+  - <https://kubernetes.io/docs/setup/>
+    - <https://kubernetes.io/docs/tasks/tools/>
+      - <https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/>
+      - <https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/>
 - <https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/>
   - <https://github.com/kubernetes-sigs/aws-load-balancer-controller#readme>
+- <https://kubernetes.io/docs/concepts/services-networking/ingress/>
+- <https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/>
 
 Ingress-Nginx Controller
 
@@ -53,3 +60,7 @@ Nana Janashia
   - <https://youtu.be/s_o8dwzRlu4>
     - <https://gitlab.com/nanuchi/k8s-in-1-hour>
     - <https://hub.docker.com/r/nanajanashia/k8s-demo-app>
+
+- Others
+  - <https://www.youtube.com/watch?v=AYAh6YDXuho>
+  - <https://www.youtube.com/watch?v=S8eX0MxfnB4>
