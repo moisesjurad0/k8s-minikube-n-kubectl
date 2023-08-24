@@ -60,7 +60,7 @@ ingress-nginx-admission-patch-wc6sz         0/1     Completed   1          11m
 ingress-nginx-controller-6cc5ccb977-wvvkc   1/1     Running     0          11m
 ```
 
-## try accessing k8s dashboard with ingress
+## try accessing k8s dashboard with ingress (in Minikube)
 
 1. activate k8s dashboard (in minikube it can be done using this)
 
@@ -206,3 +206,79 @@ ingress-nginx-controller-6cc5ccb977-wvvkc   1/1     Running     0          11m
     can use --watch to wait
 
   %SystemRoot%\System32\drivers\etc\hosts
+
+## Try Ingress-Nginx Controller from Windows11 docker-desktop k8s built-in environment
+
+using this guide : <https://kubernetes.github.io/ingress-nginx/deploy/>
+
+```sh
+# use helm to install Ingress-Nginx Controller
+helm upgrade --install ingress-nginx ingress-nginx --repo https://kubernetes.github.io/ingress-nginx --namespace ingress-nginx --create-namespace
+# or kubectl 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.1/deploy/static/provider/cloud/deploy.yaml
+
+
+# Pre-flight check
+kubectl get pods --namespace=ingress-nginx
+# and this
+kubectl wait --namespace ingress-nginx --for=condition=ready pod --selector=app.kubernetes.io/component=controller --timeout=120s
+
+
+# CREATE a Deployment & Service to test 
+kubectl create deployment demo --image=httpd --port=80
+kubectl expose deployment demo
+# THEN create an Ingress resource
+kubectl create ingress demo-localhost --class=nginx --rule="demo.localdev.me/*=demo:80"
+
+
+# Now, forward a local port to the ingress controller:
+kubectl port-forward --namespace=ingress-nginx service/ingress-nginx-controller 8080:80
+
+
+# At this point, you can access your deployment using curl
+curl --resolve demo.localdev.me:8080:127.0.0.1 http://demo.localdev.me:8080
+```
+
+### k8s references
+
+ingress
+
+- <https://kubernetes.io/docs/concepts/services-networking/ingress/>
+- <https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/>
+- <https://kubernetes.github.io/ingress-nginx/deploy/>
+
+dashboard
+
+- <https://kubernetes.io/docs/tasks/access-application-cluster/web-ui-dashboard/>
+- <https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/creating-sample-user.md>
+
+minikube
+
+- <https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/>
+
+argocd
+
+- <https://argo-cd.readthedocs.io/en/stable/>
+- <https://argo-cd.readthedocs.io/en/stable/user-guide/commands/argocd_app_create/>
+
+### command summary
+
+```sh
+# install ArgoCD
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+
+# delete ArgoCD
+kubectl delete -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl delete namespace argocd
+```
+
+```sh
+# install kubernetes-dashboard 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+
+
+# delete kubernetes-dashboard installation
+kubectl delete -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+```
