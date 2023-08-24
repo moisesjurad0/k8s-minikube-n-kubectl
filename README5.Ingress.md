@@ -282,3 +282,104 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/a
 # delete kubernetes-dashboard installation
 kubectl delete -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 ```
+
+```sh
+# kubectl port-forward explanation
+kubectl port-forward <pod-name> <local-port>:<remote-port>
+# <pod-name>: The name of the pod you want to create the port-forward for.
+# <local-port>: The port on your local machine that you want to use to access the forwarded service.
+# <remote-port>: The port inside the pod that you want to forward to.
+
+
+# example
+# forward this
+kubectl port-forward backend-service 9090:8081
+# any requests you make to
+http://localhost:9090
+# will be forwarded to the service running on port 8081 inside the pod in the k8s cluster.
+```
+
+```sh
+# PORT(S) Columns
+
+# 1. Container Port: If the resource is a Pod, the PORT(S) column might display the port(s) that the containers within the pod are listening on. For example, if your pod has a container running a web server on port 80, you might see 80/TCP in the PORT(S) column.
+
+# 2. Service Ports: If the resource is a Service, the PORT(S) column could show the ports exposed by that service. A Kubernetes Service allows you to expose a set of pods as a network service. If you have a Service that exposes ports 80 and 443, you might see 80:30800/TCP,443:30443/TCP in the PORT(S) column. The format is externalPort:internalPort/protocol.
+
+# 3. Ingress Ports: If you have an Ingress resource, it could list the ports being routed by the Ingress controller. Ingress is a way to manage external access to the services in your cluster. The ports listed might indicate which external ports are being routed to which internal services.
+```
+
+---
+
+```sh
+# generate ssl cert from gitbash
+openssl genpkey -algorithm RSA -out private.key
+openssl req -new -key private.key -out certificate.csr
+openssl x509 -req -days 365 -in certificate.csr -signkey private.key -out certificate.crt
+base64 -w 0 certificate.crt > tls.crt
+base64 -w 0 private.key > tls.key
+```
+
+apply here in this secret object
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dashboard-secret-tls
+  namespace: your-namespace
+type: kubernetes.io/tls
+data:
+  tls.crt: <base64-encoded-certificate-data>
+  tls.key: <base64-encoded-private-key-data>
+```
+
+using
+
+```sh
+kubectl apply -f <tls-secret.yaml>
+```
+
+---
+
+```sh
+kubectl get all -n kubernetes-dashboard
+```
+
+output
+
+```sh
+NAME                                             READY   STATUS    RESTARTS   AGE
+pod/dashboard-metrics-scraper-5cb4f4bb9c-q4pzk   1/1     Running   0          17h
+pod/kubernetes-dashboard-6967859bff-6j68s        1/1     Running   0          17h
+
+NAME                                TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)    AGE
+service/dashboard-metrics-scraper   ClusterIP   10.101.56.96   <none>        8000/TCP   17h
+service/kubernetes-dashboard        ClusterIP   10.106.74.9    <none>        443/TCP    17h
+
+NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/dashboard-metrics-scraper   1/1     1            1           17h
+deployment.apps/kubernetes-dashboard        1/1     1            1           17h
+
+NAME                                                   DESIRED   CURRENT   READY   AGE
+replicaset.apps/dashboard-metrics-scraper-5cb4f4bb9c   1         1         1       17h
+replicaset.apps/kubernetes-dashboard-6967859bff        1         1         1       17h
+```
+
+to try dashboard
+
+```sh
+kubectl port-forward -n kubernetes-dashboard svc/kubernetes-dashboard 4545:443
+```
+
+```sh
+Forwarding from 127.0.0.1:4545 -> 8443
+Forwarding from [::1]:4545 -> 8443
+Handling connection for 4545
+Handling connection for 4545
+Handling connection for 4545
+Handling connection for 4545
+Handling connection for 4545
+Handling connection for 4545
+Handling connection for 4545
+```

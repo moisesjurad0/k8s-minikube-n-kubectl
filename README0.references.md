@@ -41,6 +41,11 @@ Ingress-Nginx Controller
 
 - <https://kubernetes.github.io/ingress-nginx/deploy/baremetal/>
 
+MarcelDempers68 | That DevOps Guy
+
+- <https://github.com/marcel-dempers/docker-development-youtube-series>
+- <https://www.youtube.com/watch?v=72zYxSxifpM>
+
 Moises Jurado
 
 - <https://github.com/moisesjurad0/k8s-argoCD-app-of-apps-definition>
