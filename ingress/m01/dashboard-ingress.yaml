@@ -9,6 +9,7 @@ metadata:
     # nginx.ingress.kubernetes.io/ssl-passthrough: "true" # this is if you don't want to configure the TLS secret
     # nginx.ingress.kubernetes.io/rewrite-target: / # this is to re-write the url
     # nginx.ingress.kubernetes.io/ssl-redirect: "true" # Optional: Redirect HTTP to HTTPS
+    # nginx.ingress.kubernetes.io/app-root: /#/login
 spec:
   # ingressClassName: nginx
   tls:
