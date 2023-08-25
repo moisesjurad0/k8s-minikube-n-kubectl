@@ -460,13 +460,13 @@ after some testing trying to run the k8s dashboard I realized that my hosts file
 
     **the thing is the .js resources are giving 404**
 
-    ![Image01](<github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140325.png>)
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140325.png>)
 
-    ![Image01](<github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140329.png>)
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140329.png>)
 
-    ![Image01](<github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140333.png>)
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140333.png>)
 
-    ![Image01](<github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140335.png>)
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140335.png>)
 
 ---
 Use this to read the logs
