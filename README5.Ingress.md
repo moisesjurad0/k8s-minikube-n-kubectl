@@ -366,7 +366,7 @@ replicaset.apps/dashboard-metrics-scraper-5cb4f4bb9c   1         1         1    
 replicaset.apps/kubernetes-dashboard-6967859bff        1         1         1       17h
 ```
 
-to try dashboard
+to try dashboard by port-forward
 
 ```sh
 kubectl port-forward -n kubernetes-dashboard svc/kubernetes-dashboard 4545:443
@@ -383,3 +383,77 @@ Handling connection for 4545
 Handling connection for 4545
 Handling connection for 4545
 ```
+
+---
+
+test dashboard with curl
+
+```sh
+# after applying m01 ingress example, test it with this
+curl --resolve dashboard.com:443:127.0.0.1 https://dashboard.com -k
+```
+
+output
+
+```sh
+<!--
+Copyright 2017 The Kubernetes Authors.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+--><!DOCTYPE html><html lang="en" dir="ltr"><head>
+  <meta charset="utf-8">
+  <title>Kubernetes Dashboard</title>
+  <link rel="icon" type="image/png" href="assets/images/kubernetes-logo.png">
+  <meta name="viewport" content="width=device-width">
+<style>html,body{height:100%;margin:0}*::-webkit-scrollbar{background:transparent;height:8px;width:8px}</style><link rel="stylesheet" href="styles.243e6d874431c8e8.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.243e6d874431c8e8.css"></noscript></head>
+
+<body>
+  <kd-root></kd-root>
+<script src="runtime.134ad7745384bed8.js" type="module"></script><script src="polyfills.5c84b93f78682d4f.js" type="module"></script><script src="scripts.2c4f58d7c579cacb.js" defer></script><script src="en.main.3550e3edca7d0ed8.js" type="module"></script>
+
+
+</body></html>
+```
+
+---
+
+after some testing trying to run the k8s dashboard I realized that my hosts file had a conflicting line. From here I could observe some facts:
+
+1. docker-desktop k8s built-in doesn't need to port forward the nginx controller because external ip assignated is 127.0.0.1
+
+    ```sh
+    kubectl get svc -n ingress-nginx
+    ```
+
+    note that EXTERNAL-IP of service/ingress-nginx-controller is localhost
+
+    ```sh
+    NAME                                 TYPE           CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+    ingress-nginx-controller             LoadBalancer   10.108.112.159   localhost     80:31162/TCP,443:32282/TCP   42h
+    ingress-nginx-controller-admission   ClusterIP      10.106.203.91    <none>        443/TCP                      42h
+    ```
+
+1. In order for this case to work I only needed to add the proper line to `C:\Windows\System32\drivers\etc\hosts` (apart from the ingress and secret)
+
+    ```sh
+    # correct line
+    127.0.0.1 dashboard.com
+    # I also had this
+    # 192.168.49.2 dashboard.com
+    ```
+
+1. now that is "externallty" working the k8s dashboard I've noticed that the page insn't visible but the code is there.
+
+    I verified this by seeing the tag `<title>Kubernetes Dashboard</title>` in the code rendered. The content is the same as the chunk I pasted some lines above.
+
+    Probably this case needs the use of `nginx.ingress.kubernetes.io/rewrite-target` annotation because I remember the dashboard has some sufix in the home page like `/home` or something

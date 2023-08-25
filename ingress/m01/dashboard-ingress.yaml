@@ -5,9 +5,10 @@ metadata:
   namespace: kubernetes-dashboard
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    # nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS" # this is mandatoy in order to work
+    # nginx.ingress.kubernetes.io/ssl-passthrough: "true" # this is if you don't want to configure the TLS secret
+    # nginx.ingress.kubernetes.io/rewrite-target: / # this is to re-write the url
+    # nginx.ingress.kubernetes.io/ssl-redirect: "true" # Optional: Redirect HTTP to HTTPS
 spec:
   # ingressClassName: nginx
   tls:
