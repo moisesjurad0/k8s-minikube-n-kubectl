@@ -457,3 +457,56 @@ after some testing trying to run the k8s dashboard I realized that my hosts file
     I verified this by seeing the tag `<title>Kubernetes Dashboard</title>` in the code rendered. The content is the same as the chunk I pasted some lines above.
 
     Probably this case needs the use of `nginx.ingress.kubernetes.io/rewrite-target` annotation because I remember the dashboard has some sufix in the home page like `/home` or something
+
+    **the thing is the .js resources are giving 404**
+
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140325>)
+
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140329>)
+
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140333>)
+
+    ![Image01](<https://github.com/moisesjurad0/k8s-minikube-n-kubectl/raw/main/ingress/m01/img/Screenshot 2023-08-25 140335>)
+
+---
+Use this to read the logs
+
+```sh
+kubectl -n ingress-nginx logs -l app.kubernetes.io/instance=ingress-nginx
+```
+
+```sh
+# it will output something like this
+W0825 16:19:13.160463       7 controller.go:1449] Using default certificate
+I0825 16:19:13.160557       7 controller.go:190] "Configuration changes detected, backend reload required"
+I0825 16:19:13.226304       7 controller.go:207] "Backend successfully reloaded"
+I0825 16:19:13.226519       7 event.go:285] Event(v1.ObjectReference{Kind:"Pod", Namespace:"ingress-nginx", Name:"ingress-nginx-controller-5fcb5746fc-p428g", UID:"276d3090-25c1-4548-9cab-106a96ecbcf0", APIVersion:"v1", ResourceVersion:"167082", FieldPath:""}): type: 'Normal' reason: 'RELOAD' NGINX reload triggered due to a change in configuration
+192.168.65.4 - - [25/Aug/2023:16:19:14 +0000] "GET / HTTP/2.0" 200 821 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" 474 0.004 [kubernetes-dashboard-kubernetes-dashboard-443] [] 10.1.0.29:8443 821 0.005 200 6cf6cbffac279eabf46b423f5d2c29c8
+192.168.65.4 - - [25/Aug/2023:16:19:14 +0000] "GET /runtime.134ad7745384bed8.js HTTP/2.0" 404 548 "https://dashboard.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" 102 0.001 [upstream-default-backend] [] 127.0.0.1:8181 548 0.000 404 1fcd22e5f47201ab738f7b4b8b894551
+192.168.65.4 - - [25/Aug/2023:16:19:14 +0000] "GET /polyfills.5c84b93f78682d4f.js HTTP/2.0" 404 548 "https://dashboard.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" 39 0.001 [upstream-default-backend] [] 127.0.0.1:8181 548 0.001 404 d6872bac03f321d83a001a83cb6279b9
+192.168.65.4 - - [25/Aug/2023:16:19:14 +0000] "GET /en.main.3550e3edca7d0ed8.js HTTP/2.0" 404 548 "https://dashboard.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" 37 0.001 [upstream-default-backend] [] 127.0.0.1:8181 548 0.001 404 436701e40ed07469ce1eda7f1b8dc2d2
+192.168.65.4 - - [25/Aug/2023:16:19:14 +0000] "GET /scripts.2c4f58d7c579cacb.js HTTP/2.0" 404 548 "https://dashboard.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" 43 0.001 [upstream-default-backend] [] 127.0.0.1:8181 548 0.001 404 81d4540dac859a613efa4d4204ff0654
+192.168.65.4 - - [25/Aug/2023:16:19:14 +0000] "GET /styles.243e6d874431c8e8.css HTTP/2.0" 404 548 "https://dashboard.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36" 57 0.000 [upstream-default-backend] [] 127.0.0.1:8181 548 0.001 404 af6a89a41eeca43bd8a3be9d21f43269
+```
+
+---
+
+to configure dashbaord access
+
+- <https://github.com/kubernetes/dashboard/blob/master/docs/user/access-control/README.md>
+  - <https://kubernetes.io/docs/reference/access-authn-authz/authentication/#service-account-tokens>
+
+    ```sh
+    # crea un usuario
+    kubectl create serviceaccount myuser1
+    # output
+    serviceaccount/myuser1 created
+
+    # obten su token
+    kubectl create token myuser1
+    # output
+    eyJhbGciOiJSUzI1NiIsImtp...
+    ```
+
+  - <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#role-and-clusterrole>
+  - <https://kubernetes.io/docs/reference/access-authn-authz/rbac/#service-account-permissions>
